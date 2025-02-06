@@ -1,13 +1,26 @@
-"use client";
-
+'use client'
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState,useEffect } from "react";
+
+
+import { useUser, SignedOut, SignInButton,} from "@clerk/nextjs";
+
 
 export default function AdminLogin() {
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
+    const { user } = useUser();
+
+  useEffect(() => {
+    if (user?.primaryEmailAddress?.emailAddress === "komalfareed93@gmail.com") {
+      router.push("/admindashbord");
+    }
+  }, [user, router]); 
+
+
 
   const handleLoggedIn = (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,7 +64,16 @@ export default function AdminLogin() {
         >
           Login
         </button>
-      </form>
+
+        <SignedOut>
+         <SignInButton>
+           <button className="mt-4 w-full bg-black text-white p-3 rounded-md font-extrabold text-2xl hover:bg-gray-800 transition duration-300">
+             Login with Clerk
+           </button>
+         </SignInButton>
+       </SignedOut>
+       </form>
+
     </div>
   );
 }
@@ -60,6 +82,38 @@ export default function AdminLogin() {
 
 
 
+
+
+
+// "use client";
+
+// import { useUser, SignedOut, SignInButton, SignedIn, SignOutButton } from "@clerk/nextjs";
+// import { useRouter } from "next/navigation";
+// import { useEffect } from "react";
+
+// export default function AdminLogin() {
+//   const { user } = useUser();
+//   const router = useRouter();
+
+//   useEffect(() => {
+//     if (user?.primaryEmailAddress?.emailAddress === "komalfareed93@gmail.com") {
+//       router.push("/admindashbord");
+//     }
+//   }, [user, router]); // Ensure effect runs only when user changes
+
+//   return (
+//     <div className="flex flex-col justify-center items-center h-screen bg-gray-100">
+//       <h1 className="mb-4 text-xl font-bold">Admin Login</h1>
+//       <SignedOut>
+//         <SignInButton>
+//           <button className="bg-black text-white px-4 py-2 rounded-lg">
+//             Login with Clerk
+//           </button>
+//         </SignInButton>
+//       </SignedOut>
+//     </div>
+//   );
+// }
 
 
 

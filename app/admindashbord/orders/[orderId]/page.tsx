@@ -52,7 +52,29 @@ export default function OrderDetail() {
   return (
     <div className="flex min-h-screen bg-gray-100 dark:bg-gray-900">
       {/* Main Content */}
-      <div className="flex-1 p-8">
+      <div className="flex-1 p-8 mb-10">
+
+
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="bg-gray-900 text-white p-4 rounded-lg">
+          <h2 className="text-lg">New Orders</h2>
+          <p className="text-3xl font-bold">150</p>
+        </div>
+        <div className="bg-gray-900 text-white p-4 rounded-lg">
+          <h2 className="text-lg">Bounce Rate</h2>
+          <p className="text-3xl font-bold">53%</p>
+        </div>
+        <div className="bg-gray-900 text-white p-4 rounded-lg">
+          <h2 className="text-lg">User Registrations</h2>
+          <p className="text-3xl font-bold">44</p>
+        </div>
+        <div className="bg-gray-900 text-white p-4 rounded-lg">
+          <h2 className="text-lg">Unique Visitor</h2>
+          <p className="text-3xl font-bold">65</p>
+        </div>
+      </div>
+    
+
         <div className="max-w-4xl mx-auto bg-white dark:bg-gray-800 p-6 shadow-lg rounded-lg">
           <h2 className=" text-center text-4xl font-extrabold text-gray-800 dark:text-gray-200 mb-4">
             Order Details

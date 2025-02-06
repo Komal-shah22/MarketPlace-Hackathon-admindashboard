@@ -1,6 +1,5 @@
 "use client";
 import { client } from "@/sanity/lib/client";
-import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import Link from "next/link";
 import { MdDashboard } from "react-icons/md";
@@ -9,6 +8,10 @@ import { FaMessage } from "react-icons/fa6";
 import { IoSettings } from "react-icons/io5";
 import { RiLoginBoxLine } from "react-icons/ri";
 import { IoMdPerson } from "react-icons/io";
+
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { SignedIn, SignOutButton, useUser } from "@clerk/nextjs";
 
 interface Order {
   _id: string;
@@ -30,6 +33,10 @@ export default function AdminDashboard() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [filter, setFilter] = useState<string>("All Orders");
 
+  const { user, isSignedIn } = useUser();
+  const router = useRouter();
+  const [isUserLoaded, setIsUserLoaded] = useState(false);
+
   useEffect(() => {
     client
       .fetch(
@@ -49,6 +56,17 @@ export default function AdminDashboard() {
       ? orders
       : orders.filter((order) => order.status === filter);
 
+  useEffect(() => {
+    if (!isSignedIn) {
+      router.push("/"); // Redirect to home if not signed in
+    } else {
+      setIsUserLoaded(true);
+    }
+  }, [isSignedIn, router]);
+
+  if (!isUserLoaded) {
+    return <p>Loading...</p>;
+  }
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
@@ -83,7 +101,12 @@ export default function AdminDashboard() {
             <RiLoginBoxLine /> Login
           </p>
           <p className="flex items-center gap-2 pt-3">
-            <IoMdPerson /> Sign In
+            <IoMdPerson />{" "}
+            <SignedIn>
+              <SignOutButton>
+                <button>Sign Out</button>
+              </SignOutButton>
+            </SignedIn>
           </p>
         </div>
       </aside>
@@ -91,6 +114,13 @@ export default function AdminDashboard() {
       {/* Main Content */}
       <div className="flex-1 flex flex-col bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white ml-0 lg:ml-64">
         <div className="p-4 overflow-auto">
+          <p className="text-center font-extrabold text-xl">
+            Hello, {user?.primaryEmailAddress?.emailAddress}
+          </p>
+          <h1 className="text-center font-extrabold text-2xl">
+            Welcome to SHOP.CO
+          </h1>
+
           <h2 className="text-center text-4xl font-extrabold mb-4">
             Orders ({filter})
           </h2>
@@ -198,7 +228,6 @@ export default function AdminDashboard() {
                       className="text-center text-4xl font-extrabold p-4"
                     >
                       No orders found for &quot;{filter}&quot;
-
                     </td>
                   </tr>
                 )}
@@ -210,3 +239,7 @@ export default function AdminDashboard() {
     </div>
   );
 }
+
+
+
+

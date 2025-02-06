@@ -19,8 +19,7 @@
 // }
 
 
-
-"use client";
+'use client'
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -32,7 +31,7 @@ export default function Protected({ children }: { children: React.ReactNode }) {
     if (typeof window !== "undefined") {
       const isLoggedIn = localStorage.getItem("isLoggedIn");
       if (!isLoggedIn) {
-        router.push("/admin");
+        router.push("/admindashbord");
       } else {
         setIsLoading(false);
       }
@@ -40,7 +39,7 @@ export default function Protected({ children }: { children: React.ReactNode }) {
   }, [router]);
 
   if (isLoading) {
-    return <p className="text-center mt-10 text-gray-600">Checking authentication...</p>;
+    return <p className="text-center text-2xl font-extrabold mt-10 text-gray-600">Checking authentication...</p>;
   }
 
   return <>{children}</>;
